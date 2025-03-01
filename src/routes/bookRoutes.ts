@@ -3,8 +3,8 @@ import Book from "../models/Book";
 
 const router = express.Router();
 
-// 📌 1️⃣ 책 목록 조회 (서버사이드 페이지네이션 + 제목 & 저자 필터링)
-router.get("/", async (req: Request, res: Response) => {
+// 책 목록 조회 (서버사이드 페이지네이션 + 제목 & 저자 필터링)
+router.get("/books", async (req: Request, res: Response) => {
   try {
     const { page = "1", limit = "10", title, author } = req.query;
     const pageNumber = parseInt(page as string);
@@ -30,8 +30,8 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
-// 📌 2️⃣ 책 상세 정보 조회
-router.get("/:id", async (req: Request, res: Response) => {
+// 책 상세 정보 조회
+router.get("/books/:id", async (req: Request, res: Response) => {
   try {
     const book = await Book.findById(req.params.id);
     if (!book) {
@@ -44,11 +44,19 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// 📌 3️⃣ 책 추가 (프론트엔드에서 크롤링한 데이터 저장)
-router.post("/", async (req: Request, res: Response) => {
+// 책 추가 (프론트엔드에서 크롤링한 데이터 저장)
+router.post("/books", async (req: Request, res: Response) => {
   try {
-    const { title, author, thumbnail, summary } = req.body;
-    const book = new Book({ title, author, thumbnail, summary });
+    const { id, title, author, thumbnail, summary, count, price } = req.body;
+    const book = new Book({
+      id,
+      title,
+      author,
+      thumbnail,
+      summary,
+      count,
+      price,
+    });
     await book.save();
     res.status(201).json(book);
   } catch (error) {
@@ -56,8 +64,8 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
-// 📌 4️⃣ 책 정보 수정
-router.put("/:id", async (req: Request, res: Response) => {
+// 책 정보 수정
+router.put("/books/:id", async (req: Request, res: Response) => {
   try {
     const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -72,8 +80,8 @@ router.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// 📌 5️⃣ 책 삭제
-router.delete("/:id", async (req: Request, res: Response) => {
+// 책 삭제
+router.delete("/books/:id", async (req: Request, res: Response) => {
   try {
     const deletedBook = await Book.findByIdAndDelete(req.params.id);
     if (!deletedBook) {
