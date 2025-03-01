@@ -6,6 +6,8 @@ export interface IBook extends Document {
   author: string;
   thumbnail: string;
   summary: string;
+  count: number;
+  price: number;
 }
 
 const BookSchema: Schema = new Schema({
@@ -14,6 +16,8 @@ const BookSchema: Schema = new Schema({
   author: { type: String, required: true },
   thumbnail: { type: String, required: true },
   summary: { type: String, required: true },
+  count: { type: Number, default: 0 },
+  price: { type: Number, default: 0 },
 });
 
 export default mongoose.model<IBook>("Book", BookSchema);
