@@ -12,5 +12,10 @@
     "@types/node": "^22.13.8",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
+    "build": "tsc"
   }
 }
