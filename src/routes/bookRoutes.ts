@@ -67,9 +67,11 @@ router.post("/books", async (req: Request, res: Response) => {
 // 책 정보 수정
 router.put("/books/:id", async (req: Request, res: Response) => {
   try {
-    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const updatedBook = await Book.findOneAndUpdate(
+      { id: Number(req.params.id) }, // _id가 아닌 id로 검색
+      req.body,
+      { new: true } // 업데이트된 데이터 반환
+    );
     if (!updatedBook) {
       res.status(404).json({ message: "책을 찾을 수 없음" });
       return;
@@ -83,7 +85,9 @@ router.put("/books/:id", async (req: Request, res: Response) => {
 // 책 삭제
 router.delete("/books/:id", async (req: Request, res: Response) => {
   try {
-    const deletedBook = await Book.findByIdAndDelete(req.params.id);
+    const deletedBook = await Book.findOneAndDelete({
+      id: Number(req.params.id),
+    });
     if (!deletedBook) {
       res.status(404).json({ message: "책을 찾을 수 없음" });
       return;
