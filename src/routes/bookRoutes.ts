@@ -33,7 +33,7 @@ router.get("/books", async (req: Request, res: Response) => {
 // 책 상세 정보 조회
 router.get("/books/:id", async (req: Request, res: Response) => {
   try {
-    const book = await Book.findById(req.params.id);
+    const book = await Book.findOne({ id: Number(req.params.id) }); // 숫자로 변환 후 검색
     if (!book) {
       res.status(404).json({ message: "책을 찾을 수 없음" });
       return;
